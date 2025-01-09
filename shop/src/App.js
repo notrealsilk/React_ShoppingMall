@@ -2,6 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import {Navbar, Container, Nav} from 'react-bootstrap'
+import { useNavigate, Outlet } from 'react-router-dom';
 // div 내부 스타일에 이미지를 넣는 방법
 // import bg from './main.jpg'
 
@@ -11,61 +12,79 @@ import data from './data.js'; // 상품 데이터 가져오기 / .js는 생략�
 // import {data} from './data.js'; // 변수 data를 가져오기
 
 // 라우팅
-import {Link, Route, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
+
+import Detail from './routes/Detail.js';
 
 function App() {
 
   // 상품 데이터 저장 : 서버에서 가져온 데이터를 state에 저장
   let [shoes] = useState(data)
   // console.log(shoes[0].title);
+
+  // 라우터 : 페이지 이동
+  let navigate = useNavigate();
  
   return (
     <div className="App">
-        {/* 상단바 */}
-        {/* <div className="main-bg" style={{ backgroundImage : 'url(' + bg + ')' }}></div> */}
-        <div className="main-bg">
-        <Navbar bg="dark" variant="dark">
-          <Container>
-          <Navbar.Brand href="#home">SweatHouse</Navbar.Brand>
+      {/* 상단바 */}
+      <Navbar bg="dark" variant="dark">
+        <Container>
+        <Navbar.Brand href="/">SweatHouse</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            {/* { navigate('-1') : 뒤로가기*/}
+            <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/detail') }}>detail</Nav.Link>
           </Nav>
-          </Container>
-        </Navbar>
-      </div>
+        </Container>
+      </Navbar>
 
-      {/* 페이지 이동 */}
+      {/* 페이지 이동
       <Link to='/'>홈</Link>
-      <Link to='/detail'>상세페이지</Link>
+      <Link to='/detail'>상세페이지</Link> */}
 
       <Routes>
-        <Route path="/" element={
+      <Route path="/" element={
+        <>
+          {/* 메인 배경 */}
+          <div className="main-bg"></div>
 
-          /* 화면 3등분.. HOME에서만 뜨게하려면 route안에 해당 태그 넣기기 */
+          {/* 화면 3등분.. HOME에서만 뜨게 하려면 Route 안에 해당 태그 넣기 */}
           <div className="container">
             <div className="row">
-              {/* 카드 컴포넌트 반복  */}
-              {/* 배열.map((요소(like 임시변수), 인덱스) */}
-              {
-                shoes.map((a,i)=>{
-                  return (
+              {/* 카드 컴포넌트 반복 */}
+              {shoes.map((a, i) => {
+                return (
                   /* App(부모) -> Card(자식) 이렇게 props 전송 */
-                  <Card shoes={shoes[i]} i={i+1}></Card>
-                )
-                })
-              }
+                  <Card shoes={shoes[i]} i={i + 1} key={i}></Card>
+                );
+              })}
             </div>
-          </div> 
-          } />
+          </div>
+        </>
+      } />
 
-        <Route path="/detail" element={
-          <h1>Detail</h1>
-        } />
+        <Route path="/detail" element={<Detail/>} />
+        <Route path="/about" element={<About/>} >
+        {/* Nested routes : 라우터 안의 라우터 */}
+          <Route path="member" element={<div>멤버</div>} />
+          <Route path="location" element={<div>위치</div>} />
+        </Route>
+        <Route path="*" element={<div>앗! 페이지가 없어요</div>} />
       </Routes>
     </div>
   );
+}
+
+function About(){
+  return (
+  <div>
+      <h4>어바웃 페이지</h4>
+        <p>회사정보</p>
+        {/* Outlet: Nested routes를 화면에 보여주는 위치 */}
+        <Outlet></Outlet>
+  </div>
+)
 }
 
 // 카드 컴포넌트 만들기
