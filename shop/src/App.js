@@ -10,6 +10,9 @@ import data from './data.js'; // 상품 데이터 가져오기 / .js는 생략�
 // import 커스텀이름 from '파일경로'
 // import {data} from './data.js'; // 변수 data를 가져오기
 
+// 라우팅
+import {Link, Route, Routes} from 'react-router-dom';
+
 function App() {
 
   // 상품 데이터 저장 : 서버에서 가져온 데이터를 state에 저장
@@ -18,35 +21,49 @@ function App() {
  
   return (
     <div className="App">
-      {/* <div className="main-bg" style={{ backgroundImage : 'url(' + bg + ')' }}></div> */}
-      <div className="main-bg">
-      <Navbar bg="dark" variant="dark">
-        <Container>
-        <Navbar.Brand href="#home">SweatHouse</Navbar.Brand>
-        <Nav className="me-auto">
-          <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#features">Features</Nav.Link>
-          <Nav.Link href="#pricing">Pricing</Nav.Link>
-        </Nav>
-        </Container>
-      </Navbar>
+        {/* 상단바 */}
+        {/* <div className="main-bg" style={{ backgroundImage : 'url(' + bg + ')' }}></div> */}
+        <div className="main-bg">
+        <Navbar bg="dark" variant="dark">
+          <Container>
+          <Navbar.Brand href="#home">SweatHouse</Navbar.Brand>
+          <Nav className="me-auto">
+            <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="#features">Features</Nav.Link>
+            <Nav.Link href="#pricing">Pricing</Nav.Link>
+          </Nav>
+          </Container>
+        </Navbar>
       </div>
 
-      {/* 화면 3등분 */}
-      <div className="container">
-        <div className="row">
-          {/* 카드 컴포넌트 반복 */}
-          {/* 배열.map((요소(like 임시변수), 인덱스) */}
-          {
-            shoes.map((a,i)=>{
-              return (
-              /* App(부모) -> Card(자식) 이렇게 props 전송 */
-              <Card shoes={shoes[i]} i={i+1}></Card>
-            )
-            })
-          }
-        </div>
-      </div> 
+      {/* 페이지 이동 */}
+      <Link to='/'>홈</Link>
+      <Link to='/detail'>상세페이지</Link>
+
+      <Routes>
+        <Route path="/" element={
+
+          /* 화면 3등분.. HOME에서만 뜨게하려면 route안에 해당 태그 넣기기 */
+          <div className="container">
+            <div className="row">
+              {/* 카드 컴포넌트 반복  */}
+              {/* 배열.map((요소(like 임시변수), 인덱스) */}
+              {
+                shoes.map((a,i)=>{
+                  return (
+                  /* App(부모) -> Card(자식) 이렇게 props 전송 */
+                  <Card shoes={shoes[i]} i={i+1}></Card>
+                )
+                })
+              }
+            </div>
+          </div> 
+          } />
+
+        <Route path="/detail" element={
+          <h1>Detail</h1>
+        } />
+      </Routes>
     </div>
   );
 }
