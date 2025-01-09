@@ -14,7 +14,7 @@ function App() {
 
   // 상품 데이터 저장 : 서버에서 가져온 데이터를 state에 저장
   let [shoes] = useState(data)
-  console.log(shoes[0].title);
+  // console.log(shoes[0].title);
  
   return (
     <div className="App">
@@ -35,27 +35,34 @@ function App() {
       {/* 화면 3등분 */}
       <div className="container">
         <div className="row">
-          <div className="col-md-4">
-            {/* codingapple.com/어쩌구/ 경로에 배포가능 */}
-          {/* <img src={process.env.PUBLIC_URL + '/logo192.png'} />  */}
-            <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="80%" alt='shoes1'/>
-            <h4>{shoes[0].title}</h4>
-            <p>{shoes[0].price}</p>
-          </div>
-          <div className="col-md-4">
-          <img src="https://codingapple1.github.io/shop/shoes2.jpg" width="80%" alt='shoes2'/>
-            <h4>상품명</h4>
-            <p>상품소개</p>
-          </div>
-          <div className="col-md-4">
-          <img src="https://codingapple1.github.io/shop/shoes3.jpg" width="80%" alt='shoes3'/>
-            <h4>상품명</h4>
-            <p>상품소개</p>
-          </div>
+          {/* 카드 컴포넌트 반복 */}
+          {/* 배열.map((요소(like 임시변수), 인덱스) */}
+          {
+            shoes.map((a,i)=>{
+              return (
+              /* App(부모) -> Card(자식) 이렇게 props 전송 */
+              <Card shoes={shoes[i]} i={i+1}></Card>
+            )
+            })
+          }
         </div>
       </div> 
     </div>
   );
+}
+
+// 카드 컴포넌트 만들기
+function Card(props){
+  return(
+  <div className="col-md-4">
+  {/* codingapple.com/어쩌구/ 경로에 배포가능 */}
+  {/* <img src={process.env.PUBLIC_URL + '/logo192.png'} />  */}
+  <img src={'https://codingapple1.github.io/shop/shoes' + props.i + '.jpg'} width="80%" alt='shoes'/>
+  {/* props.shoes로 데이터 받기 */}
+  <h4>{props.shoes.title}</h4>
+  <p>{props.shoes.price}</p>
+</div>
+  )
 }
 
 export default App;
