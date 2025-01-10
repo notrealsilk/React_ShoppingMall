@@ -65,8 +65,9 @@ function App() {
           </div>
         </>
       } />
-
-        <Route path="/detail" element={<Detail/>} />
+        {/* 상세페이지 -> shoes 데이터 props */}
+        {/* url 파라미터 ":id" : 페이지 여러개 만들기*/}
+        <Route path="/detail/:id" element={<Detail shoes={shoes}/>} />
         <Route path="/about" element={<About/>} >
         {/* Nested routes : 라우터 안의 라우터 */}
           <Route path="member" element={<div>멤버</div>} />
