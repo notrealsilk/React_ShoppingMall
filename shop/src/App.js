@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import {Navbar, Container, Nav} from 'react-bootstrap'
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate, Outlet, Link } from 'react-router-dom';
 // div 내부 스타일에 이미지를 넣는 방법
 // import bg from './main.jpg'
 
@@ -34,7 +34,9 @@ function App() {
           <Nav className="me-auto">
             {/* { navigate('-1') : 뒤로가기*/}
             <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
-            <Nav.Link onClick={()=>{ navigate('/detail') }}>detail</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/detail') }}>Detail</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/about') }}>About</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/event') }}>Evnet</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -70,6 +72,10 @@ function App() {
           <Route path="member" element={<div>멤버</div>} />
           <Route path="location" element={<div>위치</div>} />
         </Route>
+        <Route path="/event" element={<Event/>}>
+          <Route path="one" element={<p>첫 주문시 양배추즙 제공</p>} />
+          <Route path="two" element={<p>생일기념 쿠폰받기</p>} />
+        </Route>
         <Route path="*" element={<div>앗! 페이지가 없어요</div>} />
       </Routes>
     </div>
@@ -80,12 +86,27 @@ function About(){
   return (
   <div>
       <h4>어바웃 페이지</h4>
-        <p>회사정보</p>
+      <div>
+          <Link to='/about/member'>회사 멤버</Link> | 
+          <Link to='/about/location'>회사 위치</Link>
+        </div>
         {/* Outlet: Nested routes를 화면에 보여주는 위치 */}
         <Outlet></Outlet>
   </div>
 )
 }
+
+function Event(){
+  return (
+      <div>
+        <h4>오늘의 이벤트</h4>
+        <div>
+          <Link to='/event/one'>첫 주문 이벤트</Link> | 
+          <Link to='/event/two'>생일 이벤트</Link>
+        </div>
+        <Outlet></Outlet>
+      </div>
+  )}
 
 // 카드 컴포넌트 만들기
 function Card(props){
