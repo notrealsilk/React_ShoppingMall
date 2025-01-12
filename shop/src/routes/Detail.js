@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 
 // styled-components : JS파일 안에 스타일 적용
@@ -29,6 +29,26 @@ function Detail(props) {
 
   let [count, setCount] = useState(0);
   let [alert, setAlert] = useState(true);
+  let [num, setNum] = useState('');
+
+  useEffect(() => {
+    let timer = setTimeout(() => {setAlert(false);}, 2000);
+    return () => { 
+      clearTimeout(timer) 
+    } // useEffect() 실행 전, 기존 타이머 제거
+  },[])
+
+  // 잘못된 값(not 문자열) 입력하면 경고창
+  const showAlert = useCallback(() => {
+    alert('그러지마세요');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+  useEffect(() => {
+    if (isNaN(num) === true) {
+      showAlert();
+    }
+  }, [num, showAlert]);
 
   let { id } = useParams(); // URL 파라미터 가져오기
   let shoes = props.shoes.find(function(x) {
@@ -38,8 +58,13 @@ function Detail(props) {
   return (
     <div>
       <div className="container">
-        {}
-        <div className='alert alert-warning'>2초 이내 구매시 할인</div>
+        {
+          alert === true
+          ? <div className="alert alert-warning">
+              2초이내 구매시 할인
+            </div>
+          : null
+        }
         {count}
         <button onClick={()=>{ setCount(count+1) }}>버튼</button>
         <div className="row">
@@ -47,6 +72,7 @@ function Detail(props) {
             <img src={`https://codingapple1.github.io/shop/shoes${shoes.id}.jpg`} width="100%" alt="shoes"/>
           </div>
           <div className="col-md-6 mt-4">
+          <input onChange={ (e) => { setNum(e.target.value) } } />
             <h4 className="pt-5">{shoes.title}</h4>
             <p>{shoes.content}</p>
             <p>{shoes.price}원</p>
