@@ -30,6 +30,16 @@ function Detail(props) {
     }, 2000);
   }, []);
 
+  // 컴포넌트 로드시, 투명도 0 -> 1로 변경
+  let [fade2, setFade2] = useState('')
+
+  useEffect(()=>{
+    setFade2('end')
+    return ()=>{
+      setFade2('')
+    }
+  },[])
+
   // 상태 변수 정의
   let [count, setCount] = useState(0);       // 버튼 클릭 카운트 상태
   let [showAlert, setShowAlert] = useState(true);  // 경고창 표시 여부 상태
@@ -64,7 +74,7 @@ function Detail(props) {
   // 컴포넌트 렌더링
   return (
     <div>
-      <div className="container">
+      <div className={'container start ' + fade2}>
         {/* 경고창 표시 */}
         {showAlert && (
           <div className="alert alert-warning">
@@ -112,15 +122,21 @@ function Detail(props) {
 
 // 탭 상태에 따라 내용 변경 (조건문은 태그 안에서 사용불가.. so 밖에서 정의)
 function TabContent({ tab }) {
-  if (tab === 0) {
-    return <div>내용0</div>;
-  } else if (tab === 1) {
-    return <div>내용1</div>;
-  } else if (tab === 2) {
-    return <div>내용2</div>;
-  } else {
-    return null;
-  }
+  let [fade, setFade] = useState('');
+
+  // 리액트18은 state가 다 변경되면 렌더링
+  useEffect(() => {
+    setTimeout(() => {setFade('end')}, 100); // 0.1초 뒤에 실행
+    return () => {
+      setFade('')
+    }
+  }, [tab]);
+
+  return (
+    <div className={`start` + fade}>
+      { [<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][tab] }
+    </div>
+  )
 }
 
 export default Detail;
