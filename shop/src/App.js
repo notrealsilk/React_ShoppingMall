@@ -15,11 +15,14 @@ import data from './data.js'; // 상품 데이터 가져오기 / .js는 생략�
 import {Route, Routes} from 'react-router-dom';
 
 import Detail from './routes/Detail.js';
+// 서버에서 데이터 가져오기(새로고침없이 가져오기 가능)
+import axios from 'axios';
 
 function App() {
 
   // 상품 데이터 저장 : 서버에서 가져온 데이터를 state에 저장
-  let [shoes] = useState(data)
+  // 상품 데이터 추가 저장 : setShose로 추가
+  let [shoes, setShose] = useState(data)
   // console.log(shoes[0].title);
 
   // 라우터 : 페이지 이동
@@ -63,6 +66,15 @@ function App() {
               })}
             </div>
           </div>
+          <button onClick={()=>{
+            axios.get('https://codingapple1.github.io/shop/data2.json')
+            .then((data)=>{ 
+              console.log(data)
+              let copy = [...shoes, ...data.data]; // 기존 데이터에 추가로 서버에 가져온 데이터 추가
+              setShose(copy);
+            })
+            
+          }}>버튼</button>
         </>
       } />
         {/* 상세페이지 -> shoes 데이터 props */}
