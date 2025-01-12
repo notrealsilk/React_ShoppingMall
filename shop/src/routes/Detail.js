@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { Nav } from 'react-bootstrap';
+
+import { Context1 } from '../App'; // 재고 저장된 보관함 가져오기
 
 // styled-components : JS파일 안에 스타일 적용
 // import styled from 'styled-components'
@@ -15,13 +17,16 @@ import { Nav } from 'react-bootstrap';
 // styled.button(YellowBtn) : styled-components로 버튼 스타일 적용
 
 function Detail(props) {
+  // useContext() : 보관함 해체
+  let {stock} = useContext(Context1); // Context API 사용
 
   // useEffect : 컴포넌트가 mount될 때, update될 때 실행
   // html 렌더링 후, useEffect안 코드 실행 됨
   // useEffect안 코드 : 어려운 연산, 서버에서 데이터 가져오는 작업, 타이머 등
   useEffect(() => {
     console.log('mount될 때 실행');
-  }, []);  // 의존성 배열을 추가하여 최초 1회만 실행되도록 설정
+    console.log('재고:', stock); // stock 값을 출력하여 사용
+  }, [stock]);  // 의존성 배열에 stock 추가하여 경고 해결
 
   // 2초 뒤 실행
   useEffect(() => {
@@ -81,7 +86,6 @@ function Detail(props) {
             2초 이내 구매 시 할인
           </div>
         )}
-
         {/* 카운터 버튼 */}
         {count}
         <button onClick={() => { setCount(count + 1); }}>버튼</button>
@@ -114,15 +118,16 @@ function Detail(props) {
         </Nav>
 
         {/* 탭 콘텐츠 */}
-        <TabContent tab={tab} />
+        <TabContent shoes={props.shoes} tab={tab} />
       </div>
     </div>
   );
 }
 
 // 탭 상태에 따라 내용 변경 (조건문은 태그 안에서 사용불가.. so 밖에서 정의)
-function TabContent({ tab }) {
+function TabContent({ tab, shoes }) {
   let [fade, setFade] = useState('');
+  let {stock} = useContext(Context1) // context API로 재고값 받아오기
 
   // 리액트18은 state가 다 변경되면 렌더링
   useEffect(() => {
@@ -134,7 +139,7 @@ function TabContent({ tab }) {
 
   return (
     <div className={`start` + fade}>
-      { [<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][tab] }
+      { [<div>{stock}</div>, <div>{shoes[0].title}</div>, <div>내용2</div>][tab] }
     </div>
   )
 }
