@@ -4,6 +4,9 @@ import { Nav } from 'react-bootstrap';
 
 import { Context1 } from '../App'; // 재고 저장된 보관함 가져오기
 
+import { useDispatch } from 'react-redux';
+import { addItem } from '../store';
+
 // styled-components : JS파일 안에 스타일 적용
 // import styled from 'styled-components'
 
@@ -19,6 +22,7 @@ import { Context1 } from '../App'; // 재고 저장된 보관함 가져오기
 function Detail(props) {
   // useContext() : 보관함 해체
   let {stock} = useContext(Context1); // Context API 사용
+  let dispatch = useDispatch(); // redux
 
   // useEffect : 컴포넌트가 mount될 때, update될 때 실행
   // html 렌더링 후, useEffect안 코드 실행 됨
@@ -100,7 +104,8 @@ function Detail(props) {
             <h4 className="pt-5">{shoes.title}</h4>
             <p>{shoes.content}</p>
             <p>{shoes.price}원</p>
-            <button className="btn btn-danger">주문하기</button>
+            <button className="btn btn-danger"
+            onClick={()=>{dispatch(addItem({id: shoes.id, name:shoes.title,count:1}))}}>주문하기</button>
           </div>
         </div>
 

@@ -19,9 +19,13 @@ import Detail from './routes/Detail.js';
 // 서버에서 데이터 가져오기(새로고침 없이 가져오기 가능)
 import axios from 'axios';
 
+// 장바구니
+import Cart from './routes/Cart.js';
+
 // Context API 사용
 import React from 'react';
 export let Context1 = React.createContext(); // state 보관함
+
 
 function App() {
   // 상품 데이터 저장 : 서버에서 가져온 데이터를 state에 저장
@@ -43,7 +47,7 @@ function App() {
           <Nav className="me-auto">
             {/* navigate('-1') : 뒤로가기 */}
             <Nav.Link onClick={() => { navigate('/'); }}>Home</Nav.Link>
-            <Nav.Link onClick={() => { navigate('/detail'); }}>Detail</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/cart'); }}>Cart</Nav.Link>
             <Nav.Link onClick={() => { navigate('/about'); }}>About</Nav.Link>
             <Nav.Link onClick={() => { navigate('/event'); }}>Event</Nav.Link>
           </Nav>
@@ -105,7 +109,10 @@ function App() {
           <Route path="two" element={<p>생일 기념 쿠폰 받기</p>} />
         </Route>
         <Route path="*" element={<div>앗! 페이지가 없어요</div>} />
+        {/* 장바구니 : redux */}
+        <Route path="/cart" element={<Cart />} />
       </Routes>
+      
     </div>
   );
 }
