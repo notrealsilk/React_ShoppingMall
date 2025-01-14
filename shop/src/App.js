@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { useNavigate, Outlet, Link } from 'react-router-dom';
+import { useQuery } from 'react-query';
 // div 내부 스타일에 이미지를 넣는 방법
 // import bg from './main.jpg'
 
@@ -22,12 +23,24 @@ import axios from 'axios';
 // 장바구니
 import Cart from './routes/Cart.js';
 
+import { useEffect } from 'react'; // useEffect : 컴포넌트가 mount될 때, update될 때 실행
+
 // Context API 사용
 import React from 'react';
 export let Context1 = React.createContext(); // state 보관함
 
-
 function App() {
+
+  // 로컬 스토리지에 객체 자료 저장
+  // let obj = { name: '홍길동', age: 25 };
+  // localStorage.setItem('obj', JSON.stringify(obj)); // JSON.stringify() : 객체를 문자열로 변환
+  // let obj2 = JSON.parse(localStorage.getItem('obj')); // JSON.parse() : 문자열을 객체로 변환
+  // console.log(obj2);
+
+  useEffect(() => {
+    localStorage.setItem('watched', JSON.stringify([])); // 로컬스토리지에 watched라는 이름으로 빈 배열 저장  
+  }, []);
+
   // 상품 데이터 저장 : 서버에서 가져온 데이터를 state에 저장
   // 상품 데이터 추가 저장 : setShoes로 추가
   let [shoes, setShoes] = useState(data);
@@ -38,6 +51,18 @@ function App() {
   // Context API 사용 - 재고 데이터 저장
   let [stock, setStock] = useState([10, 11, 12]);
 
+  // 서버에서 데이터 가져오기
+  // axios.get('https://codingapple1.github.io/userdata.json').then((result) => {
+  //   console.log(result.data);
+  // });
+
+  // react-query로 유저정보 가져오기
+  let result = useQuery('작명', () =>
+    axios.get('https://codingapple1.github.io/userdata.json').then((res) =>{
+      return res.data;
+  })
+  );
+
   return (
     <div className="App">
       {/* 상단바 */}
@@ -45,6 +70,9 @@ function App() {
         <Container>
           <Navbar.Brand href="/">SweatHouse</Navbar.Brand>
           <Nav className="me-auto">
+            { result.isLoading ? <div>로딩중...</div> : <div>{result.data.name}</div> }
+            { result.error && '에러남' }
+            { result.data && result.data.name }
             {/* navigate('-1') : 뒤로가기 */}
             <Nav.Link onClick={() => { navigate('/'); }}>Home</Nav.Link>
             <Nav.Link onClick={() => { navigate('/cart'); }}>Cart</Nav.Link>
