@@ -25,6 +25,13 @@ import Cart from './routes/Cart.js';
 
 import { useEffect } from 'react'; // useEffect : 컴포넌트가 mount될 때, update될 때 실행
 
+// lazy import : 필요할 때만 불러오기(렌더링 속도 향상)
+
+// import {lazy, Suspense, useEffect} from 'react'
+
+// const Detail = lazy( () => import('./routes/Detail.js') )
+// const Cart = lazy( () => import('./routes/Cart.js') )
+
 // Context API 사용
 import React from 'react';
 export let Context1 = React.createContext(); // state 보관함
