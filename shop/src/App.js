@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { useNavigate, Outlet, Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import Practice from './routes/Practice.js';
 // div 내부 스타일에 이미지를 넣는 방법
 // import bg from './main.jpg'
 
@@ -82,9 +83,11 @@ function App() {
             { result.data && result.data.name }
             {/* navigate('-1') : 뒤로가기 */}
             <Nav.Link onClick={() => { navigate('/'); }}>Home</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/detail/1'); }}>Detail</Nav.Link>
             <Nav.Link onClick={() => { navigate('/cart'); }}>Cart</Nav.Link>
             <Nav.Link onClick={() => { navigate('/about'); }}>About</Nav.Link>
             <Nav.Link onClick={() => { navigate('/event'); }}>Event</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/practice'); }}>Practice</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -146,6 +149,7 @@ function App() {
         <Route path="*" element={<div>앗! 페이지가 없어요</div>} />
         {/* 장바구니 : redux */}
         <Route path="/cart" element={<Cart />} />
+        <Route path="/practice" element={<Practice />} />
       </Routes>
       
     </div>
