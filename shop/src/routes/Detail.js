@@ -122,7 +122,8 @@ function Detail(props) {
           {like} <span onClick={()=>{setLike(like+1)}}>💚</span>
           {/* {like} <span onClick={()=>{setLike((a)=>{return a+1})}}>💚</span> */}
 
-          {like2} <span onClick={a}>💚</span>
+          {/* 커스텀 훅 사용 */}
+          {like2} <span onClick={a}>💚</span> 
           </div>
           <div className="col-md-6 mt-4">
             <input onChange={(e) => setInputValue(e.target.value)} />
