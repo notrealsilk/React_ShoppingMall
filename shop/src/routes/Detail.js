@@ -7,6 +7,8 @@ import { Context1 } from '../App'; // 재고 저장된 보관함 가져오기
 import { useDispatch } from 'react-redux';
 import { addItem } from '../store';
 
+import { useLike } from '../hooks/like';
+
 // styled-components : JS파일 안에 스타일 적용
 // import styled from 'styled-components'
 
@@ -20,6 +22,10 @@ import { addItem } from '../store';
 // styled.button(YellowBtn) : styled-components로 버튼 스타일 적용
 
 function Detail(props) {
+
+  // 커스텀 훅
+  let [like2,a] = useLike();
+
   // useContext() : 보관함 해체
   let { stock } = useContext(Context1); // Context API 사용
   let dispatch = useDispatch(); // redux
@@ -90,6 +96,9 @@ function Detail(props) {
     }
   }, [inputValue]); // inputValue 상태가 변경될 때마다 실행
 
+  // 좋아요 버튼
+  let [like, setLike] = useState(0);
+
   // 컴포넌트 렌더링
   return (
     <div>
@@ -108,6 +117,12 @@ function Detail(props) {
         <div className="row">
           <div className="col-md-6">
             <img src={`https://codingapple1.github.io/shop/shoes${찾은상품.id}.jpg`} width="100%" alt="shoes" />
+          </div>
+          <div>
+          {like} <span onClick={()=>{setLike(like+1)}}>💚</span>
+          {/* {like} <span onClick={()=>{setLike((a)=>{return a+1})}}>💚</span> */}
+
+          {like2} <span onClick={a}>💚</span>
           </div>
           <div className="col-md-6 mt-4">
             <input onChange={(e) => setInputValue(e.target.value)} />
